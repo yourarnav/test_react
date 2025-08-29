@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, ReferenceLine } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter } from 'recharts';
 import { Play, Pause, RotateCcw, TrendingUp, BarChart3, Zap } from 'lucide-react';
 
 const LinearRegressionDemo = () => {
@@ -8,8 +8,7 @@ const LinearRegressionDemo = () => {
   const [noise, setNoise] = useState(5);
   const [isAnimating, setIsAnimating] = useState(false);
   const [dataPoints, setDataPoints] = useState([]);
-  const [showPredictionLine, setShowPredictionLine] = useState(true);
-  const [selectedPoint, setSelectedPoint] = useState(null);
+  const [showPredictionLine] = useState(true);
 
   // Generate sample data points
   const generateDataPoints = (numPoints = 50) => {
@@ -37,7 +36,6 @@ const LinearRegressionDemo = () => {
     const sumY = dataPoints.reduce((sum, point) => sum + point.y, 0);
     const sumXY = dataPoints.reduce((sum, point) => sum + point.x * point.y, 0);
     const sumX2 = dataPoints.reduce((sum, point) => sum + point.x * point.x, 0);
-    const sumY2 = dataPoints.reduce((sum, point) => sum + point.y * point.y, 0);
     
     const bestSlope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
     const bestIntercept = (sumY - bestSlope * sumX) / n;
@@ -83,7 +81,7 @@ const LinearRegressionDemo = () => {
   // Initialize data points
   useEffect(() => {
     setDataPoints(generateDataPoints());
-  }, []);
+  }, [slope, intercept, noise]);
 
   // Animation effect
   useEffect(() => {
