@@ -80,7 +80,23 @@ const LinearRegressionDemo = () => {
 
   // Initialize data points
   useEffect(() => {
-    setDataPoints(generateDataPoints());
+    const generateInitialData = (numPoints = 50) => {
+      const points = [];
+      for (let i = 0; i < numPoints; i++) {
+        const x = Math.random() * 20;
+        const trueY = slope * x + intercept;
+        const noisyY = trueY + (Math.random() - 0.5) * noise * 2;
+        points.push({
+          x: parseFloat(x.toFixed(2)),
+          y: parseFloat(noisyY.toFixed(2)),
+          trueY: parseFloat(trueY.toFixed(2)),
+          id: i
+        });
+      }
+      return points.sort((a, b) => a.x - b.x);
+    };
+    
+    setDataPoints(generateInitialData());
   }, [slope, intercept, noise]);
 
   // Animation effect
